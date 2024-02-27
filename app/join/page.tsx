@@ -37,7 +37,6 @@ export default function Join() {
   const inputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     console.log(e.target.value);
-
   }
 
   const checkPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
