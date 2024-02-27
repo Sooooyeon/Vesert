@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import styled from 'styled-components';
 
 export default function Join() {
   const router = useRouter();
@@ -59,11 +60,11 @@ export default function Join() {
 
   const submitJoin = ()=>{
     const joinData = {
-      "username": userId, // 아이디
+      "username": userId,
       "password": password,
       "password2": confirmPw,
-      "phone_number": userPhoneNum, // 전화번호는 010으로 시작하는 10~11자리 숫자
-      "name": userName, // 이름
+      "phone_number": userPhoneNum, 
+      "name": userName,
     }
     join(joinData);
     }
@@ -96,3 +97,4 @@ export default function Join() {
   </div>
   );
 }
+
