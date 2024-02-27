@@ -11,11 +11,12 @@ export default function Login() {
 
   const [userId, setUserId] = useState("");  
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState('buyer');
 
   const loginData = {
     "username": userId,
 		"password": password,
-		"login_type": "BUYER"
+		"login_type": userType
   }
 
   const login = async (loginData: object) => {
@@ -50,6 +51,10 @@ export default function Login() {
   <div>
     <h1>Vesert</h1>
     <form onSubmit={handleSubmitLogin}>
+      <div>
+        <button type="button" onClick={() => setUserType('BUYER')} style={{ backgroundColor: userType === 'BUYER' ? 'skyblue' : 'white' }}>구매회원</button>
+        <button type="button" onClick={() => setUserType('SELLER')} style={{ backgroundColor: userType === 'SELLER' ? 'skyblue' : 'white' }}>판매회원</button>
+      </div>
       <input type="text" placeholder='아이디' onChange={inputId} value={userId}/>
       <input type="password" placeholder='비밀번호' onChange={inputPassword} id="passwordInput"/>
       <button>로그인</button>
