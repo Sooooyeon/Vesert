@@ -32,13 +32,13 @@ export const authInstance = axios.create({
 });
 
 authInstance.interceptors.request.use(
-  (config: any) => {
+  (config) => {
     const storedToken = localStorage.getItem('token');
-    if (storedToken && config.headers.Authorization.includes('null')) {
-      config.headers = {
+    if (storedToken && (!config.headers.Authorization)) {
+      config.headers? {
         ...config.headers,
-        Authorization: `Bearer ${token}`,
-      };
+        Authorization: `Bearer ${storedToken}`,
+      } : {};
     }
     return config;
   },
