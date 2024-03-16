@@ -10,9 +10,7 @@ import useLogin from "@/hooks/useLogin";
 
 export default function Login() {
   const {
-    userId,
     setUserId,
-    password,
     setPassword,
     userType,
     setUserType,
@@ -52,8 +50,6 @@ export default function Login() {
 }
 
 const LoginCont = styled.div`
-  /* max-width: 550px; */
-  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   justify-content: center;
