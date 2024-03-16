@@ -9,7 +9,7 @@ import useLogin from "@/hooks/useLogin";
 
 
 export default function Login() {
-    const {
+  const {
     userId,
     setUserId,
     password,
@@ -19,9 +19,9 @@ export default function Login() {
     login
   } = useLogin();
 
-  const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) =>{
+  const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
-    login();
+    await login();
   }
 
 
@@ -35,7 +35,7 @@ export default function Login() {
           <Tab selected={userType === 'SELLER'} onClick={() => setUserType('SELLER')}>판매회원</Tab>
         </Tabs>
         <LogintForm onSubmit={handleSubmitLogin}>
-            <Input type="text" placeholder='아이디' onChange={(e) => setUserId(e.target.value)} value={userId}/>
+            <Input type="text" placeholder='아이디' onChange={(e) => setUserId(e.target.value)}/>
             <Input type="password" placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} id="passwordInput"/>
           <LoginBtn>
             <button className="button">로그인</button>
