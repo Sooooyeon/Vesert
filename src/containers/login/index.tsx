@@ -1,53 +1,27 @@
 "use client"
 
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
-import { loginAPI } from "@/services/auth";
 import logo from "../../../public/images/vesert-logo.png"
 import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from "@/styles/Container";
 import styled from "styled-components";
+import useLogin from "@/hooks/useLogin";
 
 
 export default function Login() {
-
-  const router = useRouter();
-  const [userId, setUserId] = useState("");  
-  const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState('BUYER');
-
-  const loginData = {
-    "username": userId,
-		"password": password,
-		"login_type": userType
-  }
-
-  const login = async (loginData: object) => {
-  const { data } = await loginAPI(loginData);
-  console.log(data);
-  localStorage.setItem("token", data.token);
-  console.log(localStorage);
-  if(data.token){
-    router.push("/home")
-  }
-  return data;
-}
-
-
-  const inputId = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setUserId(e.target.value);
-  console.log(e.target.value);
-  }
-
-  const inputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    console.log(e.target.value);
-  }
+    const {
+    userId,
+    setUserId,
+    password,
+    setPassword,
+    userType,
+    setUserType,
+    login
+  } = useLogin();
 
   const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
-    login(loginData)
+    login();
   }
 
 
@@ -61,8 +35,8 @@ export default function Login() {
           <Tab selected={userType === 'SELLER'} onClick={() => setUserType('SELLER')}>판매회원</Tab>
         </Tabs>
         <LogintForm onSubmit={handleSubmitLogin}>
-            <Input type="text" placeholder='아이디' onChange={inputId} value={userId}/>
-            <Input type="password" placeholder='비밀번호' onChange={inputPassword} id="passwordInput"/>
+            <Input type="text" placeholder='아이디' onChange={(e) => setUserId(e.target.value)} value={userId}/>
+            <Input type="password" placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} id="passwordInput"/>
           <LoginBtn>
             <button className="button">로그인</button>
           </LoginBtn>

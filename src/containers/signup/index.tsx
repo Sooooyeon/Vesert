@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import { signUpBuyerAPI } from "@/services/auth";
 import styled from 'styled-components';
 
 export default function Signup() {
