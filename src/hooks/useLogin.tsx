@@ -7,6 +7,7 @@ const useLogin = () => {
   const [userId, setUserId] = useState("");  
   const [password, setPassword] = useState("");
   const [userType, setUserType] = useState('BUYER');
+  const [loginFailMessage, setLoginFailMessage] = useState('');
 
   const login = async () => {
     const loginData = {
@@ -24,7 +25,14 @@ const useLogin = () => {
       }
       return data;
     } catch (error) {
-        router.push("/error");
+      if (error instanceof Error) {
+        const axiosError = error as any;
+        if (axiosError.response) {
+          setLoginFailMessage(axiosError.response.data.FAIL_Message)
+        }
+        return loginFailMessage;
+      }
+      return null;
     }
   };
 
@@ -35,6 +43,7 @@ const useLogin = () => {
     setPassword,
     userType,
     setUserType,
+    loginFailMessage,
     login
   };
 };

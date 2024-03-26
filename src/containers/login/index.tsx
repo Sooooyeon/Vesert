@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Container } from "@/styles/Container";
 import styled from "styled-components";
 import useLogin from "@/hooks/useLogin";
+import { useEffect, useState } from "react";
 
 
 export default function Login() {
@@ -14,13 +15,44 @@ export default function Login() {
     setPassword,
     userType,
     setUserType,
+    loginFailMessage,
     login
   } = useLogin();
+
+  const [loginFailState, setLoginFailState] = useState('');
+
+  useEffect(() => {
+    if (loginFailMessage === '로그인 정보가 없습니다. 로그인 유형을 확인해주세요.') {
+      setLoginFailState('CHECK_USER_TYPE');
+    } else if (loginFailMessage === '로그인 정보가 없습니다.') {
+      setLoginFailState('ID_PW_ERROR');
+    } else {
+      setLoginFailState('');
+    }
+  }, [loginFailMessage]);
 
   const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
     await login();
+    if(loginFailMessage === '로그인 정보가 없습니다. 로그인 유형을 학인해주세요.'){
+      setLoginFailState('CHECK_USER_TYPE');
+    } 
+    if(loginFailMessage === '로그인 정보가 없습니다.'){
+      setLoginFailState('ID_PW_ERROR');
+    } 
+    console.log(loginFailMessage);
   }
+  
+  const renderLoginFailMessage = () => {
+    switch (loginFailState) {
+      case 'CHECK_USER_TYPE':
+        return <p className="failMessage">로그인 유형을 확인해주세요.</p>;
+      case 'ID_PW_ERROR':
+        return <p className="failMessage">아이디 또는 비밀번호가 잘못되었습니다.</p>;
+      default:
+        return null;
+    }
+  };
 
 
   return (
@@ -33,10 +65,11 @@ export default function Login() {
           <Tab selected={userType === 'SELLER'} onClick={() => setUserType('SELLER')}>판매회원</Tab>
         </Tabs>
         <LogintForm onSubmit={handleSubmitLogin}>
-            <Input type="text" placeholder='아이디' onChange={(e) => setUserId(e.target.value)}/>
-            <Input type="password" placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} id="passwordInput"/>
+          <Input type="text" placeholder='아이디' onChange={(e) => setUserId(e.target.value)}/>
+          <Input type="password" placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} id="passwordInput"/>
+          <FailMessage>{renderLoginFailMessage()}</FailMessage>
           <LoginBtn>
-            <button className="button">로그인</button>
+            <button className="loginButton">로그인</button>
           </LoginBtn>
         </LogintForm>
       </LoginBox>
@@ -116,8 +149,15 @@ const Input = styled.input`
     border-bottom: 1px solid #c2530e;
   }
 `
+const FailMessage = styled.div`
+  .failMessage{
+    color: red;
+    font-size: 14px;
+    margin-top: -8px;
+  }
+`
 
-const LoginBtn = styled.div`
+const LoginBtn = styled.button`
   width: 100%;
   margin: 1rem 0;
   padding: 1.2rem;
@@ -125,7 +165,8 @@ const LoginBtn = styled.div`
   border-radius: 10px;
   background-color: #77492C;
   cursor: pointer;
-  .button{
+  .loginButton{
+    width: 100%;
     color: white;
   }
 `
