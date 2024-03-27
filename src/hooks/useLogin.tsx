@@ -28,7 +28,13 @@ const useLogin = () => {
       if (error instanceof Error) {
         const axiosError = error as any;
         if (axiosError.response) {
-          setLoginFailMessage(axiosError.response.data.FAIL_Message)
+          const failMessage = axiosError.response.data.FAIL_Message;
+          if(failMessage !== "" && failMessage == '로그인 정보가 없습니다.'){
+            setLoginFailMessage("아이디 또는 비밀번호가 일치하지 않습니다.")
+          }
+          if(failMessage !== "" && failMessage == '로그인 정보가 없습니다. 로그인 유형을 학인해주세요.'){
+            setLoginFailMessage("회원 유형이 올바르지 않습니다.")
+          }
         }
         return loginFailMessage;
       }
